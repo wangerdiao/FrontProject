@@ -59,15 +59,12 @@ export default {
     },
     methods:{
       goSearch() { //搜索按钮的回调函数,编程式跳转,向search路由进行跳转
-        // this.$router.push('/search')
         //路由传参对象写法
-         this.$router.push({
-          name:'search',
-          // params:{keyword:"" || undefined},
-          params:{keyWord:this.keyWord},
-          query:{keyword:this.keyWord.toUpperCase()}
-        })
-        // console.log(result)  //没有进行调整前返回的是Promise
+        if(this.$route.query) {
+          let location = {name:'search',params:{keyWord:this.keyWord|| undefined}}
+          location.query = this.$route.query
+          this.$router.push(location)
+        }
       }
     } 
 };

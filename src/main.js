@@ -7,6 +7,7 @@ Vue.config.productionTip = false
 //引入路由
 import router  from '@/router'
 import store  from '@/store'  // 引入Vuex.store
+import '@/mock/mockServer' //引入mock数据
 new Vue({
   render: h => h(App),
   //注册路由信息,所有组件都有了$route,$router属性

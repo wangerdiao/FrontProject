@@ -2,7 +2,62 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseenter="changeShow" @mouseleave="leaveIndex">
+        <h2 class="all">全部商品分类</h2>
+        <!-- 过渡动画 -->
+        <transition name="sort">
+          <div class="sort" v-show="show">
+            <!-- 路由跳转的事件委托 -->
+            <div class="all-sort-list2" @click="goSearch">
+              <div
+                class="item"
+                v-for="(c1, index) in categoryList"
+                :key="c1.categoryId"
+                :class="{ cur: currentIndex == index }"
+                @mouseleave="leaveIndex"
+              >
+                <h3 @mouseenter="changeIndex(index)">
+                  <a
+                    :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId"
+                    >{{ c1.categoryName }}</a
+                  >
+                </h3>
+                <!-- 二三级分类的显示与隐藏 -->
+                <div
+                  class="item-list clearfix"
+                  :style="{ display: currentIndex == index ? 'block' : 'none' }"
+                >
+                  <div
+                    class="subitem"
+                    v-for="c2 in c1.categoryChild"
+                    :key="c2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
+                        <a
+                          :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId"
+                          >{{ c2.categoryName }}</a
+                        >
+                      </dt>
+                      <dd>
+                        <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
+                          <a
+                            :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId"
+                            >{{ c3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,56 +68,6 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <!-- 路由跳转的事件委托 -->
-        <div class="all-sort-list2" @click="goSearch">
-          <div
-            class="item"
-            v-for="(c1, index) in categoryList"
-            :key="c1.categoryId"
-            :class="{ cur: currentIndex == index }"
-            @mouseleave="leaveIndex"
-          >
-            <h3 @mouseenter="changeIndex(index)">
-              <a
-                :data-categoryName="c1.categoryName"
-                :data-category1Id="c1.categoryId"
-                >{{ c1.categoryName }}</a
-              >
-            </h3>
-            <!-- 二三级分类的显示与隐藏 -->
-            <div
-              class="item-list clearfix"
-              :style="{ display: currentIndex == index ? 'block' : 'none' }"
-            >
-              <div
-                class="subitem"
-                v-for="c2 in c1.categoryChild"
-                :key="c2.categoryId"
-              >
-                <dl class="fore">
-                  <dt>
-                    <a
-                      :data-categoryName="c2.categoryName"
-                      :data-category2Id="c2.categoryId"
-                      >{{ c2.categoryName }}</a
-                    >
-                  </dt>
-                  <dd>
-                    <em v-for="c3 in c2.categoryChild" :key="c3.categoryId">
-                      <a
-                        :data-categoryName="c3.categoryName"
-                        :data-category3Id="c3.categoryId"
-                        >{{ c3.categoryName }}</a
-                      >
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -75,6 +80,7 @@ export default {
   data() {
     return {
       currentIndex: -1,
+      show: true, //控制TypeNav的显示与隐藏
     };
   },
   methods: {
@@ -84,14 +90,17 @@ export default {
     }, 50), //当用户操作过快时，浏览器会反应不过来，如果函数里还要大量业务就会出现卡顿现象，所以需要节流
     leaveIndex() {
       this.currentIndex = -1;
+      if (this.$route.path != "/home") this.show = false; //在不是home页面下控制TypeNav的显示隐藏
     },
     goSearch(e) {
       //三级联动路由跳转  编程式路由导航+路由传参
       let element = e.target; //给1，2，3级别添加自定义属性后，获取自定义属性的a标签,用来区分其他子节点
       // console.log(element);
       // console.log(element.dataset);
-      let { categoryname, category1id, category2id, category3id } =element.dataset; //如果标签属性上有categoryname那么一定是a标签
-      if (categoryname) {//一级二级三级分类的a标签
+      let { categoryname, category1id, category2id, category3id } =
+        element.dataset; //如果标签属性上有categoryname那么一定是a标签
+      if (categoryname) {
+        //一级二级三级分类的a标签
         let location = { name: "search" };
         let query = { categoryName: categoryname };
         if (category1id) {
@@ -102,14 +111,23 @@ export default {
         } else {
           query.category3Id = category3id;
         }
-        location.query = query //整理路由参数
-        this.$router.push(location) //进行路由传参
+        if(this.$route.params) {
+          location.params = this.$route.params  //整理params参数
+        }
+        location.query = query; //整理路由参数
+        this.$router.push(location); //进行路由传参
       }
+    },
+    changeShow() {
+      this.show = true;
     },
   },
   mounted() {
     //组件挂载完毕发送请求
-    this.$store.dispatch("categoryList");
+    if (this.$route.path != "/home") {
+      //如果进入的不是home首页，隐藏TypeNav组件
+      this.show = false;
+    }
   },
   computed: {
     ...mapState({
@@ -241,6 +259,16 @@ export default {
           // }
         }
       }
+    }
+    //TypeNav的过渡动画
+    .sort-enter {
+      height: 0px;
+    }
+    .sort-enter-to {
+      height: 461px;
+    }
+    .sort-enter-active {
+      transition: all .5s linear;
     }
   }
 }

@@ -1,14 +1,14 @@
 <template>
   <div>
-     我是搜索
-     <!-- {{keyWord.keyWord}} -->
+     <TypeNav></TypeNav>
   </div>
 </template>
 
 <script>
+import TypeNav from '@/components/TypeNav/index.vue';
 export default {
-  name:'',
-  // props:['keyWord'] //接受路由传参
+    name: "",
+    components: { TypeNav }
 }
 </script>
 

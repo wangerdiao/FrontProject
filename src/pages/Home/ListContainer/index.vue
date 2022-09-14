@@ -102,8 +102,17 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
 export default {
-    name:''
+    name:'',
+    mounted() { //派发action,通过vuex发送ajax请求，把数据存储到仓库中
+      this.$store.dispatch('getBannerList')
+    },
+    computed:{
+      ...mapState({
+        bannerList:state => state.home.bannerList  //获取vuex中的轮播图数据
+      })
+    }
 };
 </script>
 

@@ -3,29 +3,8 @@
   <div class="list-container">
     <div class="sortList clearfix">
       <div class="center">
-        <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="./images/banner1.jpg" />
-            </div>
-            <!-- <div class="swiper-slide">
-              <img src="./images/banner2.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner3.jpg" />
-            </div>
-            <div class="swiper-slide">
-              <img src="./images/banner4.jpg" />
-            </div> -->
-          </div>
-          <!-- 如果需要分页器 -->
-          <div class="swiper-pagination"></div>
-
-          <!-- 如果需要导航按钮 -->
-          <div class="swiper-button-prev"></div>
-          <div class="swiper-button-next"></div>
-        </div>
+        <!--banner轮播，使用全局轮播图组件-->
+       <Carousel :list="bannerList"></Carousel> 
       </div>
       <!-- 轮播左边，商品快报 -->
       <div class="right">
@@ -102,17 +81,21 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
+import { mapState } from "vuex";
 export default {
-    name:'',
-    mounted() { //派发action,通过vuex发送ajax请求，把数据存储到仓库中
-      this.$store.dispatch('getBannerList')
-    },
-    computed:{
-      ...mapState({
-        bannerList:state => state.home.bannerList  //获取vuex中的轮播图数据
-      })
-    }
+  name: "",
+  mounted() {
+    //派发action,通过vuex发送ajax请求，把数据存储到仓库中
+    this.$store.dispatch("getBannerList");
+    //在new Swiper实例之前，页面中的结构必须得有(结果发现这里放在Mounted不行)
+    //因为dispatch中涉及到异步语句，导致v-for遍历的时候结构还没有完成
+  },
+  computed: {
+    ...mapState({
+      bannerList: (state) => state.home.bannerList, //获取vuex中的轮播图数据
+    }),
+  },
+ 
 };
 </script>
 

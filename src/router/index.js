@@ -16,16 +16,14 @@ VueRouter.prototype.push = function(location,resolve,reject) {
     if(resolve && reject){
         originPush.call(this,location,resolve,reject)
     }else{
-        console.log(this)//this指向组件实例
+        // console.log(this)//this指向组件实例
         originPush.call(this,location,()=>{},()=>{})
     }
 }
 VueRouter.prototype.replace = function(location,resolve,reject) {
     if(resolve && reject){
-        console.log(this) //this指向组件实例
         originReplace.call(this,location,resolve,reject)
     }else{
-        console.log(this)
         originReplace.call(this,location,()=>{},()=>{})
     }
 }
@@ -44,7 +42,7 @@ export default new VueRouter({
     },
     {
         name:'search',
-        path:'/search/:keyWord?', //指定params参数可传可不传
+        path:'/search/:keyword?', //指定params参数可传可不传
         component:Search,
         meta:{show:true},
         // props:true  布尔值,传递params参数

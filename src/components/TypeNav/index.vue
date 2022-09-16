@@ -110,11 +110,12 @@ export default {
         } else {
           query.category3Id = category3id;
         }
-        if(this.$route.params) {
+        if(this.$route.params.keyword) {
           location.params = this.$route.params  //整理params参数
         }
         location.query = query; //整理路由参数
         this.$router.push(location); //进行路由传参
+        
       }
     },
     changeShow() {

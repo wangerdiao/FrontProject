@@ -126,9 +126,9 @@
         "category3Id": "",  //三级分类id
         "categoryName": "", //分类名字
         "keyword": "",  //关键字
-        "order": "", //排序
+        "order": "", //排序 
         "pageNo": 1, //分页器：代表当前第几页
-        "pageSize": 10, //每一个展示数据的个数
+        "pageSize": 3, //每一个展示数据的个数
         "props": [], //平台售卖属性操作带的参数
         "trademark": "" //品牌
         }
@@ -137,7 +137,7 @@
     beforeMount(){
       // this.searchParams.category1Id = this.$route.query.category1Id
       // this.searchParams.categoryName = this.$route.query.categoryName  //复杂形写法
-      Object.assign(this.searchParams,this.$route.query,this.$route.params)
+      Object.assign(this.searchParams,this.$route.query,this.$route.params) //简单写法  
     },
     mounted() {
       this.getData() //在发送请求之前要带给服务器参数【searchParams参数发生变化，数值带给服务器】
@@ -148,6 +148,16 @@
     methods:{
       getData() { //search模块需要经常发送请求，把请求封装成函数，需要时调用即可
         this.$store.dispatch('getSearchList',this.searchParams)
+      }
+    },
+    watch:{
+      $route(newValue,oldValue) { //监听路由信息是否发生变化，变化重新发送请求
+        //每一次请求之前， 要置空123级id，让他接受下一次的123级id
+        this.searchParams.category1Id = ''
+        this.searchParams.category2Id = ''
+        this.searchParams.category3Id = ''
+        Object.assign(this.searchParams,this.$route.query,this.$route.params) //再次发送请求带整理参数带给服务器
+        this.getData()
       }
     }
   }

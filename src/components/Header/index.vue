@@ -37,7 +37,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="keyWord"
+            v-model="keyword"
           />
           <button class="sui-btn btn-xlarge btn-danger" type="button" @click="goSearch">
             搜索
@@ -54,17 +54,18 @@ export default {
     name:"",
     data() {
       return {
-        keyWord:''
+        keyword:''
       }
     },
     methods:{
       goSearch() { //搜索按钮的回调函数,编程式跳转,向search路由进行跳转
         //路由传参对象写法
-        if(this.$route.query) {
-          let location = {name:'search',params:{keyWord:this.keyWord|| undefined}}
+        let location = {name:'search',params:{keyword:this.keyword|| undefined}}
+        if(this.$route.query.categoryName) {
           location.query = this.$route.query
-          this.$router.push(location)
         }
+        this.$router.push(location)
+        this.keyword = ''
       }
     } 
 };

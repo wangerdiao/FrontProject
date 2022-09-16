@@ -2,6 +2,7 @@
 import { reqGetSearchInfo } from "@/api"
 const actions ={
     async getSearchList({commit},value = {}) {
+        console.log('@@@@@@',value)
         //当前这个reqGetSearchInfo函数调用获取服务器数据时候，至少传递一个参数
         let result = await reqGetSearchInfo(value)
         if(result.code==200) {

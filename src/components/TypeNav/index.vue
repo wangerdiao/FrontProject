@@ -14,7 +14,6 @@
                 v-for="(c1, index) in categoryList"
                 :key="c1.categoryId"
                 :class="{ cur: currentIndex == index }"
-                @mouseleave="leaveIndex"
               >
                 <h3 @mouseenter="changeIndex(index)">
                   <a

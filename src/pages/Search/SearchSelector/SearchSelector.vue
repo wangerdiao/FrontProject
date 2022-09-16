@@ -4,7 +4,7 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">{{trademark.tmName}}</li>
+          <li v-for="trademark in trademarkList" :key="trademark.tmId" @click="trademarkHandler(trademark)">{{trademark.tmName}}</li>
         </ul>
       </div>
       <div class="ext">
@@ -12,11 +12,14 @@
         <a href="javascript:void(0);">更多</a>
       </div>
     </div>
+    <!-- 平台售卖属性的地方 -->
     <div class="type-wrap" v-for="attr in attrsList" :key="attr.attrId">
+      <!-- 平台售卖的属性，如运行内存 -->
       <div class="fl key">{{attr.attrName}}</div>
       <div class="fl value">
         <ul class="type-list">
-          <li v-for="(value,index) in attr.attrValueList" :key="index">
+          <!-- 平台售卖额属性值，如8G -->
+          <li v-for="(value,index) in attr.attrValueList" :key="index" @click="attrInfo(attr,value)">
             <a>{{value}}</a>
           </li>
         </ul>
@@ -32,6 +35,15 @@
     name: 'SearchSelector',
     computed:{
       ...mapGetters(['trademarkList','attrsList'])
+    },
+    methods:{
+      trademarkHandler(trademark) { //品牌的事件处理函数
+        //点击品牌后，需要整理参数，给服务器发送请求。因为父组件中searchParams参数是带给服务器的，所以子组件要把点击的品牌传递给父组件----自定义事件
+        this.$emit('trademarkInfo',trademark)
+      },
+      attrInfo(attr,value) {
+        this.$emit('attrInfo',attr,value)
+      }
     }
   }
 </script>

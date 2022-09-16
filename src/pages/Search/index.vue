@@ -15,11 +15,15 @@
             <li class="with-x" v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
             <!-- keyword的面包屑 -->
             <li class="with-x" v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyWord">×</i></li>
+            <!-- 品牌面包屑 -->
+            <li class="with-x" v-show="searchParams.trademark">{{searchParams.trademark.split(":")[1]}}<i @click="removeTrademark">×</i></li>
+            <!-- 平台属性面包屑 -->
+            <li class="with-x" v-for="(attrValue,index) in searchParams.props" :key="index">{{attrValue.split(":")[1]}}<i @click="removeAttr(index)">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" @attrInfo="attrInfo"/>
 
         <!--details-->
         <div class="details clearfix">
@@ -164,6 +168,23 @@
         this.getData() //删除后还要再发请求
         this.$bus.$emit('clearKeyWord') //通知兄弟组件Header删除keyword
         this.$router.push({name:'search',query:this.$route.query}) //路由重新跳转，删除params参数，不删除query参数
+      },
+      trademarkInfo(trademark) { //自定义事件
+        this.searchParams.trademark = `${trademark.tmId} : ${trademark.tmName}` //整理参数
+        this.getData() // 再次发送请求获取数据
+      },
+      removeTrademark() { //删除品牌面包屑
+        this.searchParams.trademark = undefined || ''
+        this.getData() // 再次发送请求
+      },
+      attrInfo(attr,value) { //收集平台属性值
+        let props = `${attr.attrId}:${value}:${attr.attrName}` //整理平台属性的参数
+        if(this.searchParams.props.indexOf(props)==-1)  this.searchParams.props.push(props)  //数组去重判断
+        this.getData()
+      },
+      removeAttr(index) { //删除平台属性面包屑
+        this.searchParams.props.splice(index,1) //删除对应索引的面包屑
+        this.getData()
       }
     },
     watch:{

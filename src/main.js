@@ -12,6 +12,9 @@ import store  from '@/store'  // 引入Vuex.store
 import '@/mock/mockServer' //引入mock数据
 import 'swiper/css/swiper.css' //引入swiper样式
 new Vue({
+  beforeCreate() {
+    Vue.prototype.$bus = this //安装全局事件总线
+  },
   render: h => h(App),
   //注册路由信息,所有组件都有了$route,$router属性
   router,

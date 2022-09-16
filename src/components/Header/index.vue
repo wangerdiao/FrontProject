@@ -27,7 +27,7 @@
     <!--头部第二行 搜索区域-->
     <div class="bottom">
       <h1 class="logoArea">
-        <router-link class="logo" title="尚品汇" to="/login" target="_self">
+        <router-link class="logo" title="尚品汇" to="/home" target="_self">
           <img src="./images/logo.png" alt="" />
         </router-link>
       </h1>
@@ -65,9 +65,13 @@ export default {
           location.query = this.$route.query
         }
         this.$router.push(location)
-        this.keyword = ''
       }
-    } 
+    } ,
+    mounted() {
+      this.$bus.$on('clearKeyWord',() => { //通过全局事件总线来清除关键字
+          this.keyword = ''
+      })
+    }
 };
 </script>
 

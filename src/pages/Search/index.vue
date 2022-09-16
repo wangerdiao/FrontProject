@@ -11,10 +11,10 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <!-- 分类的面包屑 -->
+            <li class="with-x" v-show="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removeCategoryName">×</i></li>
+            <!-- keyword的面包屑 -->
+            <li class="with-x" v-show="searchParams.keyword">{{searchParams.keyword}}<i @click="removeKeyWord">×</i></li>
           </ul>
         </div>
 
@@ -148,6 +148,22 @@
     methods:{
       getData() { //search模块需要经常发送请求，把请求封装成函数，需要时调用即可
         this.$store.dispatch('getSearchList',this.searchParams)
+      },
+      removeCategoryName() { //删除分类
+        //带给服务器的参数可有可无，字符串为空还是会带给服务器，但undefined就不会带给服务器
+        this.searchParams.categoryName = '' //会带给服务器
+        this.searchParams.category1Id = undefined //不会带给服务器，提升性能
+        this.searchParams.category2Id = undefined
+        this.searchParams.category3Id = undefined
+        this.getData()
+       //修改地址栏：在当前路由组件下自己跳到自己的路由,删除query参数，params参数不删除
+        this.$router.push({name:'search',params:this.$route.params})//没有params参数默认为空对象
+      },
+      removeKeyWord() { //删除keyword
+        this.searchParams.keyword = undefined 
+        this.getData() //删除后还要再发请求
+        this.$bus.$emit('clearKeyWord') //通知兄弟组件Header删除keyword
+        this.$router.push({name:'search',query:this.$route.query}) //路由重新跳转，删除params参数，不删除query参数
       }
     },
     watch:{

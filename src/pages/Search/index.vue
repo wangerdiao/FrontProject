@@ -46,7 +46,8 @@
               <li class="yui3-u-1-5" v-for="good in goodsList" :key="good.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"><img :src="good.defaultImg" /></a>
+                    <!-- 在路由跳转的时候当上参数  -->
+                    <router-link :to="`/detail/${good.id}`"><img :src="good.defaultImg" /></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -92,7 +93,7 @@ import Pagination from '../../components/Pagination/index.vue'
         "categoryName": "", //分类名字
         "keyword": "",  //关键字
         "order": "1:desc", //排序 
-        "pageNo": 8, //分页器：代表当前第几页
+        "pageNo": 1, //分页器：代表当前第几页
         "pageSize": 3, //每一个展示数据的个数
         "props": [], //平台售卖属性操作带的参数
         "trademark": "" //品牌

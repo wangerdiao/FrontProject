@@ -8,3 +8,5 @@ export const reqGetFloorList = () => mockRequests.get('/floor')  //获取家用�
 //获取搜索模块的数据，地址为：/api/list 需要携带参数
 //当前获取搜索模块数据的接口，给服务器传递一个默认参数（至少是一个空对象）
 export const reqGetSearchInfo = (params) => requests({url:'/list',method:'POST',data:params})
+//获取产品详细信息的接口 地址为：/api/item/{ skuId }
+export const reqGetGoodsInfo = (skuId) => requests({url:`/item/${skuId}`,method:'GET'})

@@ -3,8 +3,10 @@ import App from './App.vue'
 //三级联动----注册全局组件
 import TypeNav from '@/components/TypeNav'  //注册全局组件
 import Carousel from '@/components/Carousel'
+import Pagination from '@/components/Pagination'
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
+Vue.component(Pagination.name,Pagination)
 Vue.config.productionTip = false
 //引入路由
 import router  from '@/router'

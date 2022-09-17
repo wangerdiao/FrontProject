@@ -31,23 +31,11 @@
             <!-- 价格结构 -->
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active: isOne}" @click="changeOrder(1)">
+                  <a >综合 <span v-show="isOne" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{active:isTwo}" @click="changeOrder(2)">
+                  <a >价格  <span v-show="isTwo" class="iconfont" :class="{'icon-up':isAsc,'icon-down':isDesc}"></span></a>
                 </li>
               </ul>
             </div>
@@ -80,36 +68,8 @@
               </li>
             </ul>
           </div>
-          <!-- 分页器 -->
-          <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
-          </div>
+         <!-- 分页器 -->
+         <Pagination></Pagination>
         </div>
       </div>
     </div>
@@ -119,9 +79,10 @@
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
   import { mapGetters } from 'vuex'
+import Pagination from '../../components/Pagination/index.vue'
   export default {
     name: 'Search',
-    components: {SearchSelector},
+    components: { SearchSelector, Pagination },
     data() {
       return {
         searchParams:{
@@ -130,7 +91,7 @@
         "category3Id": "",  //三级分类id
         "categoryName": "", //分类名字
         "keyword": "",  //关键字
-        "order": "", //排序 
+        "order": "1:desc", //排序 
         "pageNo": 1, //分页器：代表当前第几页
         "pageSize": 3, //每一个展示数据的个数
         "props": [], //平台售卖属性操作带的参数
@@ -147,7 +108,19 @@
       this.getData() //在发送请求之前要带给服务器参数【searchParams参数发生变化，数值带给服务器】
     },
     computed:{
-      ...mapGetters(['goodsList'])
+      ...mapGetters(['goodsList']),
+      isOne() { //排序样式
+        return this.searchParams.order.indexOf('1') != -1
+      },
+      isTwo() {
+        return this.searchParams.order.indexOf('2') != -1
+      },
+      isAsc() { //排序icon
+        return this.searchParams.order.indexOf('asc') != -1
+      },
+      isDesc() {
+        return this.searchParams.order.indexOf('desc') != -1
+      }
     },
     methods:{
       getData() { //search模块需要经常发送请求，把请求封装成函数，需要时调用即可
@@ -185,6 +158,21 @@
       removeAttr(index) { //删除平台属性面包屑
         this.searchParams.props.splice(index,1) //删除对应索引的面包屑
         this.getData()
+      },
+      changeOrder(flag) { //传递参数flag,判断点击的综合还是价格
+        let originOrder = this.searchParams.order
+        let originFlag = this.searchParams.order.split(':')[0] //第一次默认为1
+        let originSort = this.searchParams.order.split(':')[1] //第一次默认为desc
+        let newOrder = ''
+        if(originFlag==flag) { //第一次点击为综合时，修改排序     这里判断的是否点击了同一个按钮
+          newOrder = `${originFlag}:${originSort==='desc'?'asc':'desc'}`
+          console.log(newOrder)
+        }else {  //第一次点击的是价格，默认为desc     判断点击不同的按钮
+          newOrder = `${flag}:${'desc'}`
+          console.log(newOrder) 
+        }
+        this.searchParams.order = newOrder  //修改order参数，后面重新修改了originFlag,originSort
+        this.getData() //重新发送请求
       }
     },
     watch:{

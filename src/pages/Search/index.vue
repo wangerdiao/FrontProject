@@ -69,7 +69,7 @@
             </ul>
           </div>
          <!-- 分页器 -->
-         <Pagination></Pagination>
+         <Pagination :pageNo="searchParams.pageNo" :pageSize="searchParams.pageSize" :total="total"  :continues="5" @getPageNo="getPageNo"></Pagination>
         </div>
       </div>
     </div>
@@ -78,12 +78,12 @@
 
 <script>
   import SearchSelector from './SearchSelector/SearchSelector'
-  import { mapGetters } from 'vuex'
+  import { mapGetters,mapState } from 'vuex'
 import Pagination from '../../components/Pagination/index.vue'
   export default {
     name: 'Search',
     components: { SearchSelector, Pagination },
-    data() {
+    data() {  
       return {
         searchParams:{
         "category1Id": "", //一级分类id
@@ -92,7 +92,7 @@ import Pagination from '../../components/Pagination/index.vue'
         "categoryName": "", //分类名字
         "keyword": "",  //关键字
         "order": "1:desc", //排序 
-        "pageNo": 1, //分页器：代表当前第几页
+        "pageNo": 8, //分页器：代表当前第几页
         "pageSize": 3, //每一个展示数据的个数
         "props": [], //平台售卖属性操作带的参数
         "trademark": "" //品牌
@@ -110,8 +110,11 @@ import Pagination from '../../components/Pagination/index.vue'
     computed:{
       ...mapGetters(['goodsList']),
       isOne() { //排序样式
-        return this.searchParams.order.indexOf('1') != -1
+        return this.searchParams.order.indexOf('1') != -1 
       },
+      ...mapState({
+        total:state => state.search.searchList.total
+      }),
       isTwo() {
         return this.searchParams.order.indexOf('2') != -1
       },
@@ -173,6 +176,10 @@ import Pagination from '../../components/Pagination/index.vue'
         }
         this.searchParams.order = newOrder  //修改order参数，后面重新修改了originFlag,originSort
         this.getData() //重新发送请求
+      },
+      getPageNo(pageNo){ //自定义事件---获取当前页数
+        this.searchParams.pageNo = pageNo //整理参数
+        this.getData()  //再发请求
       }
     },
     watch:{

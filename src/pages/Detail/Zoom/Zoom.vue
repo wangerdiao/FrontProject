@@ -1,9 +1,9 @@
 <template>
   <div class="spec-preview">
-    <img src="../images/s1.png" />
+    <img :src="imageList.imgUrl" />
     <div class="event"></div>
     <div class="big">
-      <img src="../images/s1.png" />
+      <img :src="imageList.imgUrl" />
     </div>
     <div class="mask"></div>
   </div>
@@ -12,6 +12,22 @@
 <script>
   export default {
     name: "Zoom",
+    props:['skuImageList'],
+    data() {
+      return {
+        currentIndex:0
+      }
+    },
+    computed:{
+      imageList() {
+        return this.skuImageList[this.currentIndex] || {}
+      }
+    },
+    mounted() {
+      this.$bus.$on('changeIndex',(index) => {  //全局事件总线
+          this.currentIndex = index
+      })
+    }
   }
 </script>
 

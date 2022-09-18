@@ -4,7 +4,7 @@
       <button v-if="startNumAndEndNum.start > 1" @click="$emit('getPageNo',1)" :class="{active:pageNo==1}">1</button>
       <button v-if="startNumAndEndNum.start > 2"> ···</button>
       <!-- 遍历中间部分 -->
-      <button v-for="(page,index) in startNumAndEndNum.end" :key="index" v-if="page >= startNumAndEndNum.start" @click="$emit('getPageNo',page)" :class="{active:pageNo==page}">{{page}}</button>
+      <button v-for="(page,index) in startNumAndEndNum.end" :key="index" v-show="page >= startNumAndEndNum.start" @click="$emit('getPageNo',page)" :class="{active:pageNo==page}">{{page}}</button>
      
       
       <button v-if="startNumAndEndNum.end < totalPage-1 ">···</button>

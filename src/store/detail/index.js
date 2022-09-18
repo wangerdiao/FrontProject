@@ -23,6 +23,9 @@ const getters = {//类似于计算属性
     },
     skuInfo(state) {
         return state.goodInfo.skuInfo || {}
+    },
+    spuSaleAttrList(state) {
+        return state.goodInfo.spuSaleAttrList || []
     }
 } //理解为计算属性，用于简化仓库，让组件获得仓库的数据
 export default {

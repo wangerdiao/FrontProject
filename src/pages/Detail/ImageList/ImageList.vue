@@ -1,8 +1,8 @@
 <template>
-  <div class="swiper-container">
+  <div class="swiper-container" ref="mySwiper">
     <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <img src="../images/s1.png">
+      <div class="swiper-slide" v-for="(slider,index) in skuImageList" :key="slider.id">
+        <img :src="slider.imgUrl" :class="{active:currentIndex == index}" @click="changeCurrentIndex(index)">
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -15,6 +15,32 @@
   import Swiper from 'swiper'
   export default {
     name: "ImageList",
+    props:['skuImageList'],
+    data() {
+      return {
+        currentIndex:0
+      }
+    },
+    watch:{
+      skuImageList(newValue,oldValue) {
+        this.$nextTick(() => {
+         new Swiper(this.$refs.mySwiper, {
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            slidesPerView:3,  //显示几个图片
+            slidesPerGroup:1,  //每一次切换图片的个数，默认为1
+          });
+        })
+      }
+    },
+    methods:{
+      changeCurrentIndex(index) {
+        this.currentIndex = index  //修改响应式currentIndex
+        this.$bus.$emit('changeIndex',index) //通知兄弟组件修改图片的索引
+      }
+    }
   }
 </script>
 
@@ -43,10 +69,6 @@
           padding: 1px;
         }
 
-        &:hover {
-          border: 2px solid #f60;
-          padding: 1px;
-        }
       }
     }
 

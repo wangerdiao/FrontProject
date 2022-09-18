@@ -4,7 +4,14 @@ import Login from '@/pages/Login'
 import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
+import AddCartSuccess from '@/pages/AddCartSuccess'
 export default [
+    {
+        path: '/addcartsuccess',   //商品详情传参
+        name:'addcartsuccess',
+        component: AddCartSuccess,
+        meta: { show: true } //配置元信息
+    },
     {
         path: '/detail/:skuid',   //商品详情传参
         component: Detail,

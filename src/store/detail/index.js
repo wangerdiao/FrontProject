@@ -1,10 +1,19 @@
 //search模块化Vuex
-import { reqGetGoodsInfo } from "@/api"
+import { reqGetGoodsInfo,reqGetOrUpdateShopCar } from "@/api"
 const actions ={
-    async getGoodInfo({commit},skuId) {
+    async getGoodInfo({commit},skuId) { //获取产品详细信息
         let result = await reqGetGoodsInfo(skuId)
         if(result.code == 200) {
             commit('GETGOODINFO',result.data)
+        }
+    },
+    async addOrUpdateShopCar({commit},{skuId,skuNum}) { //将产品添加至购物车
+        //加入购物车后（发送请求），前台将参数带给服务器，服务器录入数据后返回code=200，不返回其他数据
+        let result = await reqGetOrUpdateShopCar(skuId,skuNum)
+        if(result.code == 200) {
+            return 'ok'  //添加购物车成功，返回给Detail组件
+        }else {
+            return Promise.reject(new Error('fail'))//添加购物车失败，返回给Detail组件
         }
     }
 } //处理action，可以书写自己的业务逻辑，可以处理异步

@@ -10,3 +10,5 @@ export const reqGetFloorList = () => mockRequests.get('/floor')  //获取家用�
 export const reqGetSearchInfo = (params) => requests({url:'/list',method:'POST',data:params})
 //获取产品详细信息的接口 地址为：/api/item/{ skuId }
 export const reqGetGoodsInfo = (skuId) => requests({url:`/item/${skuId}`,method:'GET'})
+//添加至购物车的接口（获取更新某一个产品的个数） 地址：/api/cart/addToCart/{ skuId }/{ skuNum }
+export const reqGetOrUpdateShopCar = (skuId,skuNum) => requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'POST'})

@@ -1,11 +1,11 @@
 <template>
   <div class="spec-preview">
     <img :src="imageList.imgUrl" />
-    <div class="event"></div>
-    <div class="big">
-      <img :src="imageList.imgUrl" />
+    <div class="event" @mousemove="handler"></div>
+    <div class="big" >
+      <img :src="imageList.imgUrl" ref="big" />
     </div>
-    <div class="mask"></div>
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -27,6 +27,22 @@
       this.$bus.$on('changeIndex',(index) => {  //全局事件总线
           this.currentIndex = index
       })
+    },
+    methods:{
+      handler(e) {  //实现放大镜效果
+        let mask = this.$refs.mask
+        let big = this.$refs.big
+        let left = e.offsetX - mask.offsetWidth/2
+        let top = e.offsetY - mask.offsetHeight/2
+        if(left<0) left = 0
+        if(left>=mask.offsetWidth) left = mask.offsetWidth
+        if(top<0) top=0
+        if(top>=mask.offsetHeight) top = mask.offsetHeight
+        mask.style.left = left + 'px'
+        mask.style.top = top + 'px'
+        big.style.left = -2 * left + 'px'
+        big.style.top = -2 * top + 'px'
+      }
     }
   }
 </script>

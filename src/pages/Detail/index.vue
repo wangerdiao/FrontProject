@@ -59,7 +59,6 @@
               </div>
             </div>
           </div>
-
           <div class="choose">
             <div class="chooseArea">
               <div class="choosed"></div>
@@ -70,12 +69,12 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="skuNum" @change="changeSkuNum">
+                <a href="javascript:" class="plus" @click="skuNum++">+</a>
+                <a href="javascript:" class="mins" @click="skuNum>1? skuNum--:skuNum=1">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a @click="addShopCar" >加入购物车</a>
               </div>
             </div>
           </div>
@@ -335,6 +334,11 @@
       ImageList,
       Zoom
     },
+    data() {
+      return {
+        skuNum:1
+      }
+    },
     mounted() {
       this.$store.dispatch('getGoodInfo',this.$route.params.skuid)
     },
@@ -345,11 +349,32 @@
       }
     },
     methods:{
-      changeActive(saleAttrValue,saleArryList) { //点击属性增加高亮效果
+      //点击属性增加高亮效果
+      changeActive(saleAttrValue,saleArryList) { 
         saleArryList.forEach(item => {
           item.isChecked = 0   //排它思想，先清除前面所有的高亮
         });
         saleAttrValue.isChecked = 1  //再给点击的属性增加高亮
+      },
+      //处理用户输入的购买数量
+      changeSkuNum(e) {
+        let value = e.target.value
+        if(isNaN(value) || value <1) { //处理非数字和负数的情况
+          this.skuNum = 1
+        }else {
+          this.skuNum = parseInt(value) //处理value为小数情况
+        }
+      },
+      //添加至购物车的回调
+      async addShopCar() { //1-发送请求，将购买的产品添加到数据库2-服务器存储后进行路由跳转传递参数3-失败给用户提示信息
+        //下面代码本质上调用了store中的addOrUpdateShopCar方法，返回一个Promise，要么成功|失败，这里需要接受成功和失败的结果  
+        try {
+          await this.$store.dispatch('addOrUpdateShopCar',{skuId:this.$route.params.skuid,skuNum:this.skuNum}) //等待store传来的请求结果
+          //如果成功就进行路由的跳转
+          this.$router.push({name:'addcartsuccess'})
+        } catch (error) {
+          alert(error.message) //失败了跳出失败信息
+        }
       }
     }
   }

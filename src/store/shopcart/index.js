@@ -1,10 +1,26 @@
 //search模块化Vuex
-import { reqGetShopCarList } from "@/api"
+import { reqGetShopCarList,reqDeleteCart,reqIsChecked } from "@/api"
 const actions ={
    async getShopCartList({commit}) { //获取购物车列表数据
     let result = await reqGetShopCarList()
     if(result.code == 200) {
         commit('GETSHOPCARTLIST',result.data)
+    }
+   },
+   async deleteCartList({commit},skuId) { //删除购物车某一产品
+    let result =await reqDeleteCart(skuId)
+    if(result.code ==200) {
+        return 'ok'
+    }else {
+        return Promise.reject(new Error('fail'))
+    }
+   },
+   async isChecked({commit},{skuId,isChecked}) { //勾选购物车的复选框
+    let result = await reqIsChecked(skuId,isChecked)
+    if(result.code ==200) {
+        return 'ok'
+    }else {
+        return Promise.reject(new Error('fail'))
     }
    }
 } //处理action，可以书写自己的业务逻辑，可以处理异步

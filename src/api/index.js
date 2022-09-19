@@ -14,3 +14,7 @@ export const reqGetGoodsInfo = (skuId) => requests({url:`/item/${skuId}`,method:
 export const reqGetOrUpdateShopCar = (skuId,skuNum) => requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'POST'})
 //获取购物车列表信息 地址：/api/cart/cartList  方式get
 export const reqGetShopCarList = () => requests({url:'/cart/cartList',method:'GET'})
+//删除购物车接口  地址/api/cart/deleteCart/{skuId} 方法DElETE
+export const reqDeleteCart = (skuId) => requests({url:`/cart/deleteCart/${skuId}`,method:'DELETE'})
+//切换购物车物品选中状态的接口 地址/api/cart/checkCart/{skuID}/{isChecked} 方法get
+export const reqIsChecked = (skuId,isChecked) => requests({url:`/cart/checkCart/${skuId}/${isChecked}`,method:'GET'})

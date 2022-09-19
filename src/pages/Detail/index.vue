@@ -370,8 +370,10 @@
         //下面代码本质上调用了store中的addOrUpdateShopCar方法，返回一个Promise，要么成功|失败，这里需要接受成功和失败的结果  
         try {
           await this.$store.dispatch('addOrUpdateShopCar',{skuId:this.$route.params.skuid,skuNum:this.skuNum}) //等待store传来的请求结果
-          //如果成功就进行路由的跳转
-          this.$router.push({name:'addcartsuccess'})
+          //如果成功就进行路由的跳转,将产品信息带给下一级的路由组件
+          //一些简单的数据skuNum可以通过query形式传递，复杂的数据通过会话存储（不持久化，会话结束数据消失）
+          this.$router.push({name:'addcartsuccess',query:{skuNum:this.skuNum}})
+          sessionStorage.setItem('SKUINFO',JSON.stringify(this.skuInfo))
         } catch (error) {
           alert(error.message) //失败了跳出失败信息
         }

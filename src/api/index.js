@@ -12,3 +12,5 @@ export const reqGetSearchInfo = (params) => requests({url:'/list',method:'POST',
 export const reqGetGoodsInfo = (skuId) => requests({url:`/item/${skuId}`,method:'GET'})
 //添加至购物车的接口（获取更新某一个产品的个数） 地址：/api/cart/addToCart/{ skuId }/{ skuNum }
 export const reqGetOrUpdateShopCar = (skuId,skuNum) => requests({url:`/cart/addToCart/${skuId}/${skuNum}`,method:'POST'})
+//获取购物车列表信息 地址：/api/cart/cartList  方式get
+export const reqGetShopCarList = () => requests({url:'/cart/cartList',method:'GET'})

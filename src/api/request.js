@@ -1,5 +1,6 @@
 //对axios进行二次封装，使用请求拦截器和响应拦截器
 import axios from 'axios'
+import store from '@/store' 
 //利用axios对象的方法create，去创建一个axios实例
 //request就是一个axios，要稍微配置一些
 import nprogress from 'nprogress'  //引入进度条  里面有start（进度条开始）,done（进度条结束）样式
@@ -10,6 +11,10 @@ const requests = axios.create({
 })
 //请求拦截器，在发送请求之前，请求拦截器可以监测到，在发送请求前做一些业务逻辑
 requests.interceptors.request.use((config) => {
+    if(store.state.detail.uuid) {
+        //请求头添加字段：和后台商量好
+        config.headers.userTempId = store.state.detail.uuid
+    }
     nprogress.start() //进度条开始
     //config配置对象,对象里headers属性很重要
     return config

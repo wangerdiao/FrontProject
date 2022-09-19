@@ -1,5 +1,6 @@
 //search模块化Vuex
 import { reqGetGoodsInfo,reqGetOrUpdateShopCar } from "@/api"
+import {getUUid} from '@/utils/uuid_token'
 const actions ={
     async getGoodInfo({commit},skuId) { //获取产品详细信息
         let result = await reqGetGoodsInfo(skuId)
@@ -23,7 +24,8 @@ const mutations = {
     }
 } //修改state的唯一手段
 const state = {
-    goodInfo:{}
+    goodInfo:{},
+    uuid:getUUid()
 } //仓库存储数据的地方
 const getters = {//类似于计算属性
     categoryView(state) {

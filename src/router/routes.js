@@ -5,7 +5,13 @@ import Search from '@/pages/Search'
 import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
+import ShopCart from '@/pages/ShopCart'
 export default [
+    {
+        path: '/shopcart',   
+        component: ShopCart,
+        meta: { show: true } //配置元信息
+    },
     {
         path: '/addcartsuccess',   //商品详情传参
         name:'addcartsuccess',

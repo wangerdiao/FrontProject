@@ -22,6 +22,22 @@ const actions ={
     }else {
         return Promise.reject(new Error('fail'))
     }
+   },
+   deleteAllChecked({dispatch,getters}) { //删除复选框选中的商品
+    let PromiseAll = []
+    getters.cartList.cartInfoList.forEach(item => {  //遍历购物车的产品
+        let promise =item.isChecked==1? dispatch('deleteCartList',item.skuId):''  //删除购物车勾选的产品，传入它的id,它返回的是一个promise
+        PromiseAll.push(promise)  //PromiseAll[p1,p2,p3]是一个数组
+    })
+    return Promise.all(PromiseAll) //判断所有的勾选产品时候删除成功
+   },
+    updateAllChecked({dispatch,getters},isChecked) { //修改全选框
+        let PromiseAll = []
+        getters.cartList.cartInfoList.forEach(item => {
+            let promise = dispatch('isChecked',{skuId:item.skuId,isChecked})
+            PromiseAll.push(promise)
+        })
+        return Promise.all(PromiseAll)
    }
 } //处理action，可以书写自己的业务逻辑，可以处理异步
 const mutations = {

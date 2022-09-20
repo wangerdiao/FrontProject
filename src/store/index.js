@@ -5,11 +5,13 @@ import home from './home'
 import search from './search'
 import detail  from './detail'
 import shopcart  from './shopcart'
+import user  from './user'
 export default new Vuex.Store({
     modules:{  //Vuex模块化
         home,
         search,
         detail,
-        shopcart
+        shopcart,
+        user
     }
 })

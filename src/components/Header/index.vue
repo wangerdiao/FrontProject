@@ -6,10 +6,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="!userName">
             <span>请</span>
             <router-link  to="/login">登录</router-link>
             <router-link  to="/register" class="register">免费注册</router-link>
+          </p>
+          <p v-else>
+            <a >{{userName}}</a>
+            <a class="register" @click="loginOut">退出登录</a>
           </p>
         </div>
         <div class="typeList">
@@ -65,12 +69,26 @@ export default {
           location.query = this.$route.query
         }
         this.$router.push(location)
+      },
+      async loginOut() { //退出登录
+        //1发送请求通知服务器退出登录，2清除项目中的userInfo,token
+          try {
+            await this.$store.dispatch('userLoginOut')
+            this.$router.push('/home')
+          } catch (error) {
+            alert(error.message)
+          }
       }
     } ,
     mounted() {
       this.$bus.$on('clearKeyWord',() => { //通过全局事件总线来清除关键字
           this.keyword = ''
       })
+    },
+    computed:{
+      userName() { //获取用户信息
+        return this.$store.state.user.userInfo.name 
+      }
     }
 };
 </script>

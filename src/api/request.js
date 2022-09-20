@@ -15,6 +15,9 @@ requests.interceptors.request.use((config) => {
         //请求头添加字段：和后台商量好
         config.headers.userTempId = store.state.detail.uuid
     }
+    if(store.state.user.token) { // 携带token
+        config.headers.token = store.state.user.token
+    }
     nprogress.start() //进度条开始
     //config配置对象,对象里headers属性很重要
     return config

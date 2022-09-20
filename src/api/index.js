@@ -24,3 +24,7 @@ export const reqGetCode = (phone) => requests({url:`/user/passport/sendCode/${ph
 export const reqUserRegister = (data) => requests({url:`/user/passport/register`,data,method:'POST'})
 //用户登录 地址/api/user/passport/login
 export const reqUserLogin = (data) => requests({url:'/user/passport/login',data,method:'POST'})
+//获取用于信息【需要带着token向服务器要用户信息】 地址：/api/user/passport/auth/getUserInfo
+export const reqGetUserInfo = ()  => requests({url:'/user/passport/auth/getUserInfo',method:'GET'})
+//退出登录接口 地址/api/user/passport/logout
+export const loginOut = () => requests({url:'/user/passport/logout',method:'GET'})

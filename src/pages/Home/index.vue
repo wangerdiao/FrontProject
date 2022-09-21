@@ -24,7 +24,6 @@ export default {
   components: { ListContainer, Recommend, Rank, Like, Floor, Brand },
   mounted() { //不能再floor组件内派发action,因为需要v-for来遍历内容不同的floor组件
     this.$store.dispatch('getFloorList') //派发actions，获取家用电气的数据
-    this.$store.dispatch('getUserInfo')
   },
   computed:{
     ...mapState({

@@ -24,6 +24,7 @@
             <img :src="cart.imgUrl" />
             <div class="item-msg">{{ cart.skuName }}</div>
           </li>
+          
           <li class="cart-list-con4">
             <span class="price">{{ cart.skuPrice }}</span>
           </li>
@@ -77,7 +78,7 @@
           <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <a class="sum-btn" @click="$router.push('/trade')">结算</a>
         </div>
       </div>
     </div>

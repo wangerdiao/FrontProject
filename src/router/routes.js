@@ -6,7 +6,19 @@ import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Trade from '@/pages/Trade'
+import Pay from '@/pages/Pay'
 export default [
+    {
+        path: '/pay',   
+        component: Pay,
+        meta: { show: true } //配置元信息
+    },
+    {
+        path: '/trade',   
+        component: Trade,
+        meta: { show: true } //配置元信息
+    },
     {
         path: '/shopcart',   
         component: ShopCart,

@@ -17,6 +17,11 @@ import router  from '@/router'
 import store  from '@/store'  // 引入Vuex.store
 import '@/mock/mockServer' //引入mock数据
 import 'swiper/css/swiper.css' //引入swiper样式
+import VueLazyload from 'vue-lazyload' //引入懒加载
+import mdz from '@/assets/1.png'
+Vue.use(VueLazyload, {
+  loading: mdz//懒加载默认的图片
+})
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线

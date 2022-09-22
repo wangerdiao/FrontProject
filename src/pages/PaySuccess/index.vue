@@ -20,6 +20,13 @@
 <script>
   export default {
     name: 'PaySuccess',
+    beforeRouteEnter:(to,from,next) => { //组件内路由
+      if(from.path =='/pay') {
+        next()
+      }else {
+        next(false)
+      }
+    } 
   }
 </script>
 

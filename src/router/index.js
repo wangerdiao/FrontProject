@@ -53,8 +53,11 @@ router.beforeEach(async (to,from,next) => {
                 }
             }
         }
-    }else {
-        next()
+    }else { //未登录状态，不能访问交易相关，支付相关，不能去个人中心
+        let toPath = to.path
+        if(toPath.indexOf('/trade')!=-1 || toPath.indexOf('/pay')!=-1|| toPath.indexOf('/center')!=-1) { 
+            next('/login?redirect='+toPath) //把未登录时想去的路径放到query参数里，登陆后跳转到query参数的路径
+        }
     }
 }) 
 export default router

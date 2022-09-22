@@ -40,12 +40,26 @@ export default [
     {
         path: '/pay',   
         component: Pay,
-        meta: { show: true } //配置元信息
+        meta: { show: true }, //配置元信息
+        beforeEnter: (to, from, next) => {
+            if(from.path == '/trade' ||from.path == '/paysuccess') {
+                next()
+            }else [
+                next(false)
+            ]
+        }
     },
     {
         path: '/trade',   
         component: Trade,
-        meta: { show: true } //配置元信息
+        meta: { show: true }, //配置元信息
+        beforeEnter: (to, from, next) => {
+            if(from.path == '/shopcart') {
+                next()
+            }else [
+                next(false)
+            ]
+        }
     },
     {
         path: '/shopcart',   

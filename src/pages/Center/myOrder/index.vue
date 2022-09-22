@@ -152,7 +152,6 @@ export default {
       async getData() { //发送请求
         const {page,limit} = this
         let result = await this.$API.reqGetMyorder(page,limit)
-        console.log(result)
         if(result.code == 200) {
           this.myOrder = result.data
         }

@@ -5,6 +5,9 @@ import TypeNav from '@/components/TypeNav'  //注册全局组件
 import Carousel from '@/components/Carousel'
 import Pagination from '@/components/Pagination'
 import * as API from '@/api' //统一引入API文件夹里的全部请求函数
+import {MessageBox} from 'element-ui'; //引入element 组件
+Vue.prototype.$msgbox = MessageBox; //挂载到原型上
+Vue.prototype.$alert = MessageBox.alert;
 Vue.component(TypeNav.name,TypeNav)
 Vue.component(Carousel.name,Carousel)
 Vue.component(Pagination.name,Pagination)

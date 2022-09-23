@@ -22,6 +22,7 @@ import mdz from '@/assets/1.png'
 Vue.use(VueLazyload, {
   loading: mdz//懒加载默认的图片
 })
+import '@/plugins/validate'
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this //安装全局事件总线

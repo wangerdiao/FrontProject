@@ -12,6 +12,8 @@ import PaySuccess from '@/pages/PaySuccess'
 import Center from '@/pages/Center'
 import MyOrder from '@/pages/Center/myOrder'
 import groupOrder from '@/pages/Center/groupOrder'
+// const foo =() => import('@/pages/Home') 路由懒加载写法
+//把路由对应的组件拆分成不同的代码块，当路由被访问时才加载对应组件，这样能更加高效
 export default [
     {
         path: '/center',   
@@ -79,7 +81,7 @@ export default [
     },
     {
         path: '/home',
-        component: Home,
+        component: ()=> import('@/pages/Home'), //路由懒加载
         meta: { show: true } //配置元信息
     },
     {
